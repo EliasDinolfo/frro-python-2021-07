@@ -1,0 +1,38 @@
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body style= "color: black">
+    <p style="text-align: right;"><a  href="http://localhost:3000/">Cerrar Sesión</a></p>
+    <center><h1 style="background-image: url('https://d1csarkz8obe9u.cloudfront.net/posterpreviews/library-zoom-background-design-template-18c11f933ef10cc76543f2b560183b53_screen.jpg?ts=1588617711');color: white; ";><br><span style="background-color: black">Bienvenido a la biblioteca genérica </span> <br><br></h1></center>
+    <hr>
+    <center><button data-toggle="collapse" data-target="#talleres">Mis Talleres</button>
+    <div id="talleres" class="collapse">
+    Titulo: Clases de Guitarra<br>
+    Descripcion: El alumno debe traer su guitarra y se le proveen los materiales restantes.<br>
+    Fecha de Inicio: 01-07-2021
+    <hr>
+    Titulo: Curso de Alemán<br>
+    Descripcion: Taller intensivo. Traer material impreso enviado por email.<br>
+    Fecha de Inicio: 02-07-2021
+    </div>
+    <hr>
+    <button data-toggle="collapse" data-target="#reservas">Mis Reservas</button>
+    <div id="reservas" class="collapse">
+        Las cosas que perdimos en el fuego - Mariana Enriquez<br>
+        Fecha Vencimiento: 1-08-2021
+    </div></center>
+</body>
+</html>
