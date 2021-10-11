@@ -64,6 +64,7 @@ print(f"Tiempo: {elapsed:2.2f} segundos - Usando Partial")
 assert result == 28671512
 # NO MODIFICAR - FIN
 
+#Prueba
 
 ###############################################################################
 
@@ -226,3 +227,4 @@ if __name__ == "__main__":
     print(f"Tiempo: {elapsed:2.8f} segundos - Recursiva Memoized - Parametro - 2")
     assert result == 2060312
 # NO MODIFICAR - FIN
+help 
