@@ -1,0 +1,28 @@
+
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <div class="container">
+        <nav class="nav nav-pills nav-justified mt-2">
+        <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
+        <a class="nav-link nav-item" href="home.html">Inicio</a>
+        <a class="nav-link nav-item" href="#">Talleres</a>
+        <a class="nav-link nav-item" href="#">Catálogo</a>
+        <a class="nav-link nav-item" href="#">Historia</a>
+        <a class="nav-link nav-item disabled active" href="#">Inicie sesión</a>
+        </nav>
+        </div>
+        
+        <div class="row justify-content-center main">
+    <h3 class="text-secondary fw-bolder"></h3>
+    <form class="main-form" method="POST" action="{{ url_for('api.create') }}" enctype="multipart/form-data">
+        <div class="form-row">
+            <label class="form-label">Usuario</label>
+            <input class="form-input" type="text" name="user" id="user" required />
+        </div>
+        <div class="form-row">
+            <label class="form-label">Contraseña</label>
+            <input class="form-input" type="password" name="password" id="password" required />
+        </div>
+        <button class="form-submit" type="submit">Ingresar</button>
+    </form>
+</div>
