@@ -4,10 +4,10 @@
         <nav class="nav nav-pills nav-justified mt-2">
         <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
         <a class="nav-link nav-item disabled active" href="#">Inicio</a>
-        <a class="nav-link nav-item" href="talleres.html">Talleres</a>
-        <a class="nav-link nav-item" href="catalogo.html">Catálogo</a>
-        <a class="nav-link nav-item" href="historia.html">Historia</a>
-        <a class="nav-link nav-item" href="signup.html">Inicie sesión</a>
+        <a class="nav-link nav-item" href="{{ url_for('talleres') }}">Talleres</a>
+        <a class="nav-link nav-item" href="{{url_for('catalogo')}}">Catálogo</a>
+        <a class="nav-link nav-item" href="{{url_for('historia')}}">Historia</a>
+        <a class="nav-link nav-item" href="{{url_for('signin')}}">Inicie sesión</a>
         </nav>
         </div>
         
