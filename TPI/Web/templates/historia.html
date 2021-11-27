@@ -1,12 +1,27 @@
-<link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<div class="container">
-    <nav class="nav nav-pills nav-justified mt-2">
-    <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
-    <a class="nav-link nav-item" href="{{url_for('home')}}">Inicio</a>
-    <a class="nav-link nav-item" href="{{url_for('talleres')}}">Talleres</a>
-    <a class="nav-link nav-item" href="{{url_for('catalogo')}}">Catálogo</a>
-    <a class="nav-link nav-item disabled active" href="#">Historia</a>
-    <a class="nav-link nav-item" href="{{url_for('signin')}}">Inicie sesión</a>
-    </nav>
-    </div>
+{% if session['iduser'] is defined %}
+    {% extends "layoutSocio.html" %}
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+{% block title %}Historia{% endblock %}
+        {% block historia %}<a class="nav-link nav-item active disabled" href="{{url_for('historia')}}">Historia</a>{% endblock %} 
+{% block content %}
+<div class="container">La Biblioteca Genérica, creada por Mariano Moreno el 13 de septiembre de 1810, atesora y resguarda, a través de las más modernas técnicas bibliotecológicas,
+ los materiales con los que se han forjado las distintas ideas y épocas del país. En sus colecciones, compuestas por cuantiosos documentos, manuscritos, libros, 
+ revistas, periódicos, fotografías, mapas, grabados, audiovisuales y partituras, persiste una cultura viva que espera ser redescubierta por la mirada de sus 
+ lectores e investigadores, reconociendo los tonos de un país heterogéneo y los puntos de vista de un pasado que no cesa de producir preguntas y proyectar 
+imágenes sobre el presente.
+
+Emplazada en el predio que comprende las calles Agüero y Austria, y las avenidas Las Heras y del Libertador –terrenos que correspondieron al antiguo 
+Palacio Unzué–, el edificio construido por los arquitectos Clorindo Testa, Francisco Bullrich y Alicia Cazzaniga proyecta una moderna estructura, 
+considerada de estilo brutalista debido a sus formas geométricas y a la presencia del hormigón a la vista. Esta construcción representa el último 
+capítulo de una rica serie arquitectónica compuesta por otros dos edificios históricos: el de sus orígenes, en la Manzana de las Luces, y su clásica 
+sede de la calle México, en el barrio de San Telmo, inaugurada a principios de siglo XX por su entonces director, Paul Groussac. Este último 
+edificio se encuentra hoy en restauración para albergar allí el Centro de Estudios y Documentación Jorge Luis Borges –en reconocimiento a 
+su trayectoria como director de la institución–, el cual oficiará como un espacio de muestras e investigación y como residencia para 
+escritores que visiten la ciudad.
+
+Nacida en las conmociones de la Revolución de Mayo, testigo privilegiado de la historia, la Biblioteca Genérica ofrece, en sus salas de lectura, sus 
+auditorios y exposiciones, una oportunidad de repensar los enigmas de nuestra cultura colectiva.</div>
+<img src="https://www.anildanza.com/wp-content/uploads/2012/04/biblioteca-alejandria_1.jpg" width=100%>
+{% endblock %}

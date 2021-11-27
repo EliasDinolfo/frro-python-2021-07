@@ -1,18 +1,12 @@
-<link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <div class="container">
-        <nav class="nav nav-pills nav-justified mt-2">
-        <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
-        <a class="nav-link nav-item disabled active" href="#">Inicio</a>
-        <a class="nav-link nav-item" href="{{ url_for('talleres') }}">Talleres</a>
-        <a class="nav-link nav-item" href="{{url_for('catalogo')}}">Catálogo</a>
-        <a class="nav-link nav-item" href="{{url_for('historia')}}">Historia</a>
-        <a class="nav-link nav-item" href="{{url_for('signin')}}">Inicie sesión</a>
-        </nav>
-        </div>
-        
-        
- 
+{% if session['iduser'] is defined %}
+    {% extends "layoutSocio.html" %}
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+{% block title %}Home{% endblock %}
+        {% block home %}<a class="nav-link nav-item active disabled" href="{{url_for('home')}}">Inicio</a>{% endblock %}
+
+{% block content %}
 <div class="container">
     <h1></h1>
     <p></p>
@@ -63,13 +57,8 @@
             <span class="sr-only">Next</span>
           </a>
         </div>
-        
-        </div>
-        
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
-    
-
+        </div>  
  </form>
 </div>
+
+{% endblock %}

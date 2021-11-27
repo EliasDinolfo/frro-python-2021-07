@@ -1,0 +1,103 @@
+{% if session['iduser'] is defined %}
+    {% extends "layoutSocio.html" %}
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+{% block title %}Pagar Taller{% endblock %}
+{% block content %}
+<div class="container">
+    <p class="mt-4">Seleccione el método de pago:</p>
+    <form method="POST" action="/pagarTaller">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="" id="radio1"
+            name="grupo1">
+            <label class="form-check-label" for="radio1">
+            MercadoPago
+            </label>
+            </div>
+            <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" value="" id="radio2" name="grupo1">
+            <label class="form-check-label" for="radio1">
+            Tarjeta Débito/Crédito
+            </label>
+        </div>
+        <div id="mercadopago" hidden="true" class="mt-4">
+            <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" class="form-control" id="apellido" name="apellido">
+            </div>
+            <div class="form-group">
+                <label for="cvu">Número de CVU:</label>
+                <input type="number" class="form-control" id="cvu" name="cvu">
+                </div>
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+        </div>
+        <div id="tarjeta" hidden="true" class="mt-4">
+            <div class="form-group">
+            <label for="nrotarjeta">Número de tarjeta:</label>
+            <input type="number" class="form-control" id="nrotarjeta" name="nrotarjeta">
+            </div>
+            <div class="form-group">
+                <label for="fechavencimiento">Fecha de vencimiento:</label>
+                <input type="month" class="form-control" id="fechavencimiento" name="fechavencimiento">
+            </div>
+            <div class="form-group">
+                <label for="codigoseguridad">Código de Seguridad:</label>
+                <input type="number" class="form-control" id="codigoseguridad" name="codigoseguridad">
+            </div>
+            <div class="form-group">
+            <label for="dni">DNI:</label>
+            <input type="number" class="form-control" id="dni" name="dni">
+            </div>
+            <div class="form-group">
+                <label for="nombretitular">Nombre del Titular:</label>
+                <input type="text" class="form-control" id="nombretitular" name="nombretitular">
+            </div>
+            <div class="form-group">
+                <label for="apellidotitular">Apellido del Titular:</label>
+                <input type="text" class="form-control" id="apellidotitular" name="apellidotitular">
+            </div>
+            <div class="form-group">
+                <label for="fechanac">Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="fechanac" name="fechanac">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono">
+            </div>
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    addEventListener('DOMContentLoaded',inicio,false);
+    function inicio()
+    {   
+    document.getElementById('radio1').addEventListener('change',mercadopago,false);    
+    document.getElementById('radio2').addEventListener('change',tarjeta,false);    
+    }
+    function cambiocheckbox()
+    {
+    alert(document.getElementById('checkbox1').checked);
+    }
+    function mercadopago()
+    {
+    document.getElementById('mercadopago').hidden=false;
+    document.getElementById('tarjeta').hidden=true;
+    }
+    function tarjeta()
+    {
+    document.getElementById('tarjeta').hidden=false;
+    document.getElementById('mercadopago').hidden=true;
+    }
+</script>
+{% endblock %}

@@ -1,12 +1,47 @@
-<link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <div class="container">
-        <nav class="nav nav-pills nav-justified mt-2">
-        <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
-        <a class="nav-link nav-item" href="{{url_for('home')}}">Inicio</a>
-        <a class="nav-link nav-item" href="{{url_for('talleres')}}">Talleres</a>
-        <a class="nav-link nav-item disabled active" href="#">Catálogo</a>
-        <a class="nav-link nav-item" href="{{url_for('historia')}}">Historia</a>
-        <a class="nav-link nav-item" href="{{url_for('signin')}}">Inicie sesión</a>
-        </nav>
-        </div>
+{% if session['iduser'] is defined %}
+    {% extends "layoutSocio.html" %}
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+{% block title %}Catalogo{% endblock %}
+        {% block catalogo %}<a class="nav-link nav-item active disabled" href="{{url_for('catalogo')}}">Catálogo</a>{% endblock %} 
+
+{% block content %}
+<br>
+<div class="container">
+        <h3 class="text-secondary fw-bolder"></h3>
+        <form class="main-form" method="POST" action="/filtrarcatalogo" enctype="multipart/form-data">
+            <label class="form-label">Buscar Libro:</label>
+            <input class="form-input" type="text" name="libro" id="libro" required/>
+            <button class="form-submit" type="submit">Buscar</button>
+            <div>
+                Filtros:
+                <input class="form-input" type="radio" name="filtro" id="radio1" value="radio1" checked>Título
+                <input class="form-input" type="radio" name="filtro" id="radio2" value="radio2">Autor
+                ---<a href="{{url_for('catalogo')}}">Catálogo Completo</a>
+            </div>
+        </form>
+        <hr>
+    {% if libros is defined and libros|length > 0 %}
+    <table>
+        <thead>
+            <tr>
+                <td>TÍTULO</td>
+                <td>AUTOR</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for libro in libros %}
+            <tr>
+                <td>{{libro.1}}</td>
+                <td>{{libro.2}} {{libro.3}}</td>
+                <td><a href="{{url_for('reservar', isbn=libro.0)}}">Reservar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+            <p>No se encontraron resultados.</p>
+    {% endif %}
+</div>
+{% endblock %}

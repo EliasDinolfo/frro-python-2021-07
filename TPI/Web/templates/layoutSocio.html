@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+  </head>
+  <body>
+    {% block menu %}
+    <div class="container">
+        <nav class="nav nav-pills nav-justified mt-2">
+        <img src="https://leonautas.files.wordpress.com/2019/10/biblioteca-logo.png" width ="50px" height="50px">
+        {% block home %}<a class="nav-link nav-item" href="{{url_for('home')}}">Inicio</a> {% endblock %}
+        {% block talleres %}<a class="nav-link nav-item" href="{{url_for('talleres')}}">Talleres</a>{% endblock %}
+        {% block catalogo %}<a class="nav-link nav-item" href="{{url_for('catalogo')}}">Catálogo</a>{% endblock %}
+        {% block historia %}<a class="nav-link nav-item" href="{{url_for('historia')}}">Historia</a>{% endblock %}
+        {% block micuenta %}<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Mi Cuenta</a>{% endblock %}
+        <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{url_for('micuenta', id=session['iduser'])}}">{Numero Socio} {{ session['data'] }}</a>
+                <hr>
+                <a class="dropdown-item disabled" href="#">Cambiar Contraseña</a>
+                <a class="dropdown-item" href="{{url_for('signin')}}">Cerrar Sesión</a>
+        </div>
+        </nav>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    {% endblock %} 
+    {% block content %}{% endblock %}
+  </body>
+</html>
