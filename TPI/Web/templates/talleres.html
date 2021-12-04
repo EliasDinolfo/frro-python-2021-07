@@ -11,14 +11,21 @@
     {% if messages %}
     <div class="container">
     <p class="mt-3">
+    <div class="alert alert-success alert-dismissible mt-2 col-sm-6">
     {% for message in messages %}
         {{ message }}<br>
     {% endfor %}
+    <button type="button" class="close" data-dismiss="alert"><span>x</span>
+    </button>
+    </div>
     </p>
     </div>
     {% endif %}
     {% endwith %}
     <div class="container">
+        <p class="mt-3 p-3 border border-3 border-danger rounded font-weight-bold">Se recuerda a los socios que no hay reembolso de pago efectuado con
+            tarjeta crédito/débito en caso de cancelar la inscripción a un taller.
+        </p>
     {% if talleres is defined and talleres|length > 0 %}
         {% for taller in talleres %}
             {% if loop.index % 4 == 0 or loop.index == 1 %}
@@ -32,27 +39,29 @@
             <div class="card-body">
             <h4 class="card-title">{{taller.3}}</h4>
             <p class="card-text">
-                Dia: {{taller.6}} <br>
-                Horario: {{taller.7}} a {{taller.8}} <br>
-                Disertante: Juan Lopez <br>
-                Costo: ${{taller.5}} <br>
-                Duracion: {{taller.10}} clases (Primera Clase: {{taller.1}})
+                <span class="font-weight-bold">Dia:</span> {{taller.6}} <br>
+                <span class="font-weight-bold">Horario:</span> {{taller.7}} a {{taller.8}} <br>
+                <span class="font-weight-bold">Disertante:</span> {{taller.11}} <br>
+                <span class="font-weight-bold">Costo:</span> ${{taller.5}} <br>
+                <span class="font-weight-bold">Duracion:</span> {{taller.10}} clases (Primera Clase: {{taller.1}})
             </p>
-            {% if taller.4 == 0 %}
+            {% if taller.4 == 0  or (session['estadosocio'] is defined and session['estadosocio'] != "Activo") %}
             <button class="btn btn-dark" disabled>Inscribirse</button>
             {% else %}
-            <a href="{{url_for('pagarTaller', idtaller=taller.0)}}" class="btn btn-primary">Inscribirse</a>
+            <a class="btn btn-primary" href="{{url_for('pagarTaller', idtaller=taller.0, costo=taller.5, nombretaller=taller.3)}}" class="btn btn-warning">Inscribirse</a>
             {% endif %}
             </div>
-            <div class="card-footer">
             {% if taller.4 == 0 %}
+            <div class="card-footer bg-danger font-weight-bold">
             Inscripción abierta. <br> 
             Cupos agotados.
+            </div>
             {% else %}
+            <div class="card-footer bg-success font-weight-bold">
             Inscripción abierta. <br>
             Cupos limitados.
-            {% endif %}
             </div>
+            {% endif %}
             </div>
             </div>
             {% if loop.index % 3 == 0 or loop.last %}

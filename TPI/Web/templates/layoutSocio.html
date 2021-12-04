@@ -16,10 +16,10 @@
         {% block home %}<a class="nav-link nav-item" href="{{url_for('home')}}">Inicio</a> {% endblock %}
         {% block talleres %}<a class="nav-link nav-item" href="{{url_for('talleres')}}">Talleres</a>{% endblock %}
         {% block catalogo %}<a class="nav-link nav-item" href="{{url_for('catalogo')}}">Catálogo</a>{% endblock %}
-        {% block historia %}<a class="nav-link nav-item" href="{{url_for('historia')}}">Historia</a>{% endblock %}
+        {% block masInfo %}<a class="nav-link nav-item" href="{{url_for('masInfo')}}">Más Info</a>{% endblock %}
         {% block micuenta %}<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Mi Cuenta</a>{% endblock %}
         <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{url_for('micuenta', id=session['iduser'])}}">{Numero Socio} {{ session['data'] }}</a>
+                <a class="dropdown-item" href="{{url_for('micuenta', id=session['iduser'])}}">Socio Nº: {{session['nrosocio']}} <br>{{ session['data'] }}</a>
                 <hr>
                 <a class="dropdown-item disabled" href="#">Cambiar Contraseña</a>
                 <a class="dropdown-item" href="{{url_for('signin')}}">Cerrar Sesión</a>

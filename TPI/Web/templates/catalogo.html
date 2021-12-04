@@ -7,27 +7,69 @@
         {% block catalogo %}<a class="nav-link nav-item active disabled" href="{{url_for('catalogo')}}">Catálogo</a>{% endblock %} 
 
 {% block content %}
+{% if modo is defined and filtro is defined %}
+<body onload="cargarFiltros('{{filtro}}','{{modo}}')">
+{% else %}
+<body>
+{% endif %}
 <br>
 <div class="container">
-        <h3 class="text-secondary fw-bolder"></h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible mt-2 col-sm-8">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert"><span>x</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
         <form class="main-form" method="POST" action="/filtrarcatalogo" enctype="multipart/form-data">
-            <label class="form-label">Buscar Libro:</label>
-            <input class="form-input" type="text" name="libro" id="libro" required/>
-            <button class="form-submit" type="submit">Buscar</button>
+                <div class="form-group row">
+                    <label for="libro" class="col-sm-2 col-form-label">Buscar Libro:</label>
+                    <div class="col-sm-5">
+                        <input class="form-input form-control" type="text" name="libro" id="libro" required/>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-outline-info">Buscar</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <a href="{{url_for('catalogo')}}" class="btn btn-outline-secondary col-md ml-3">Catálogo Completo</a>
+                    </div>
+                </div>
             <div>
-                Filtros:
-                <input class="form-input" type="radio" name="filtro" id="radio1" value="radio1" checked>Título
-                <input class="form-input" type="radio" name="filtro" id="radio2" value="radio2">Autor
-                ---<a href="{{url_for('catalogo')}}">Catálogo Completo</a>
-            </div>
+                Filtro:
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input ml-4" type="radio" name="filtro" value="radio1" id="radio1" checked>
+                    <label class="form-check-label" for="radio1">
+                    Título
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filtro" value="radio2" id="radio2">
+                    <label class="form-check-label" for="radio2">
+                    Autor
+                    </label>
+                </div>
+                <div class="form-group row mt-3">
+                    <label for="modo" class="ml-3">Modo Visualización</label>
+                    <select name="modo" id="modo" class="form-control col-sm-2 ml-2" onchange="mostrarModo(this.selectedIndex+1)">
+                        <option value="1">Lista</option>
+                        <option value="2">Miniatura</option>
+                    </select>
+                </div>
+                </div>
         </form>
         <hr>
-    {% if libros is defined and libros|length > 0 %}
-    <table>
-        <thead>
+    <div id="lista">  
+{% if libros is defined and libros|length > 0 %}
+    <table class="table table-striped">
+        <thead class="table-dark">
             <tr>
                 <td>TÍTULO</td>
                 <td>AUTOR</td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
@@ -35,13 +77,110 @@
             <tr>
                 <td>{{libro.1}}</td>
                 <td>{{libro.2}} {{libro.3}}</td>
-                <td><a href="{{url_for('reservar', isbn=libro.0)}}">Reservar</a></td>
+                {% if session['estadosocio'] is defined and session['estadosocio']!="Activo" 
+                or (libro.5 is defined and libro.5 == 0) or (libro.5 is defined and libro.6 is defined
+                and libro.5 == libro.6) %}
+                <td><button class="btn btn-dark" disabled>Reservar</button></td>
+                {% else %}
+                <td><a class="btn btn-success" href="{{url_for('reservar', isbn=libro.0)}}">Reservar</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-            <p>No se encontraron resultados.</p>
-    {% endif %}
+            
+{% endif %}
+    </div>
+{% if libros is defined and libros|length > 0 %}
+    {% set ftotal= {'total': 1} %} 
+    <div id="miniatura" hidden="true">
+    {% for libro in libros %}
+        {% if loop.index == ftotal.total %}
+            {% if ftotal.update({'total': ftotal.total + 4}) %}{% endif %}
+        <div class="row mt-3">
+            {% endif %}
+            <div class="col-md-3">
+            <div class="card text-center">
+            <div class="card-header">
+            <img src="{{libro.4}}" width="100px" height="200px">
+            </div>
+            <div class="card-body">
+            <h4 class="card-title">{{libro.1}}</h4>
+            <p class="card-text">
+                <span class="font-weight-bold">Autor:</span> {{libro.2}} {{libro.3}} <br>
+                <button type="button" class="btn btn-link"  onclick="cargardialogo('{{libro.7}}', '{{libro.1}}')"  
+                data-toggle="modal" data-target="#dialogo1">Sinopsis</button>
+            <div class="modal fade" id="dialogo1">
+            <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="titulo">{{libro.1}}</h4>
+            <button type="button" class="close" data-dismiss="modal">X</button>
+            </div>
+            <div class="modal-body" id="sinopsis">
+                <!-- sinopsis cargada de forma dinamica con javascript-->
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+            data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+            </div>
+            </div>
+            </p>
+                {% if session['estadosocio'] is defined and session['estadosocio']!="Activo" 
+                or (libro.5 is defined and libro.5 == 0) or (libro.5 is defined and libro.6 is defined
+                and libro.5 == libro.6) %}
+                <td><button class="btn btn-dark" disabled>Reservar</button></td>
+                {% else %}
+                <td><a class="btn btn-success" href="{{url_for('reservar', isbn=libro.0)}}">Reservar</a></td>
+                {% endif %}
+            </div>
+            </div>
+            </div>
+            {% if loop.index % 4 == 0 or loop.last %} 
+        </div>
+            {% endif %}
+    {% endfor %}
+    </div>
+{% endif %}
+{% if libros|length == 0 %}
+<p>No se encontraron resultados.</p>
+{% endif %}
 </div>
+<script>
+    function cargardialogo(sinopsis, titulo)
+    {
+        document.getElementById("sinopsis").innerHTML = sinopsis;
+        document.getElementById("titulo").innerHTML = titulo;
+    }
+    function mostrarModo(modo)
+    {
+        if(modo=="1"){
+            document.getElementById("lista").hidden=false;
+            document.getElementById("miniatura").hidden=true;
+        }
+        else{
+            document.getElementById("lista").hidden=true;
+            document.getElementById("miniatura").hidden=false;
+        }
+    }
+    function cargarFiltros(filtro, modo)
+    {
+        if(filtro=="radio1"){
+            document.getElementById('radio1').checked = true;
+        }
+        else if(filtro=="radio2"){
+            document.getElementById('radio2').checked = true;
+        }
+        if(modo=="1"){
+            document.getElementById('modo').selectedIndex = "0";
+        }
+        else if(modo=="2"){
+            document.getElementById('modo').selectedIndex = "1";
+        }
+        mostrarModo(modo)
+    }
+</script>
+</body>
 {% endblock %}

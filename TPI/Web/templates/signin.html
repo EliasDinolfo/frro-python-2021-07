@@ -9,7 +9,6 @@
 <div class="container">
     <h1>Ingrese con su cuenta de socio</h1>
     <p></p>
-</div>
 
 <div class="row justify-content-center main">
     <h3 class="text-secondary fw-bolder"></h3>
@@ -28,8 +27,13 @@
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     {% for message in messages %}
-    <p>{{ message }}</p>
+    <div class="alert alert-danger alert-dismissible mt-2 col-sm-6">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert"><span>x</span>
+        </button>
+    </div>
     {% endfor %}
     {% endif %}
     {% endwith %}
+</div>
 {% endblock %}

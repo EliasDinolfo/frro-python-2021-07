@@ -5,9 +5,11 @@
 {% endif %}
 {% block title %}Pagar Taller{% endblock %}
 {% block content %}
+
 <div class="container">
-    <p class="mt-4">Seleccione el método de pago:</p>
-    <form method="POST" action="/pagarTaller">
+    <p class="mt-4">{{request.args.get('nombretaller')}}</p>
+    <p>Costo: ${{request.args.get('costo')}}</p>
+    <p>Seleccione el método de pago:</p>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" value="" id="radio1"
             name="grupo1">
@@ -21,7 +23,7 @@
             Tarjeta Débito/Crédito
             </label>
         </div>
-        <div id="mercadopago" hidden="true" class="mt-4">
+        <form method="POST" id="mercadopago" hidden="true" class="mt-4" action="/confirmarPagoTaller?metodo=MercadoPago&idtaller={{request.args.get('idtaller')}}">
             <div class="form-group">
             <label for="nombre">Nombre:</label>
             <input type="text" class="form-control" id="nombre" name="nombre">
@@ -35,8 +37,8 @@
                 <input type="number" class="form-control" id="cvu" name="cvu">
                 </div>
             <button type="submit" class="btn btn-primary">Confirmar</button>
-        </div>
-        <div id="tarjeta" hidden="true" class="mt-4">
+        </form>
+        <form method="POST" id="tarjeta" action="/confirmarPagoTaller?metodo=Tarjeta Crédito/Débito&idtaller={{request.args.get('idtaller')}}" hidden="true" class="mt-4">
             <div class="form-group">
             <label for="nrotarjeta">Número de tarjeta:</label>
             <input type="number" class="form-control" id="nrotarjeta" name="nrotarjeta">
@@ -74,7 +76,6 @@
                 <input type="tel" class="form-control" id="telefono" name="telefono">
             </div>
             <button type="submit" class="btn btn-primary">Confirmar</button>
-        </div>
     </form>
 </div>
 

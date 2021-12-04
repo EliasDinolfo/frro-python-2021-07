@@ -7,14 +7,24 @@
         {% block micuenta %}<a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="">Mi Cuenta</a>{% endblock %} 
 {% block content %}
 <h1>Bienvenido {{ session['data'] }}</h1>
-
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-info alert-dismissible mt-2 col-sm-6">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert"><span>x</span>
+    </button>
+</div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
 <div class="container">
     <div id="accordion1">
       <div class="card">
         <div class="card-header" id="cabecera1">
           <h5 class="mb-0">
             <button class="btn btn-link" data-toggle="collapse" data-target="#respuesta1" aria-expanded="true" aria-controls="respuesta1">
-              Mis reservas
+              + Mis datos personales
             </button>
           </h5>
         </div>
@@ -33,17 +43,100 @@
         <div class="card-header" id="cabecera2">
           <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#respuesta2" aria-expanded="false" aria-controls="respuesta2">
-              Mis retiros
+              + Mis reservas
             </button>
           </h5>
         </div>
         <div id="respuesta2" class="collapse" aria-labelledby="cabecera2" data-parent="#accordion1">
           <div class="card-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-              mollit anim id est laborum.
+            <p>Reservas:</p>
+            {% if reservas is defined and reservas|length > 0 %}
+            {% for reserva in reservas %}
+            <ul>
+              <div class="row">
+                <div class="col-md-4">
+                  <li class="text-uppercase">{{reserva.4}}</li>
+                </div>
+                <div class="col-md-4">
+                <span class="font-weight-bold">Autor:</span> {{reserva.5}}
+                </div>
+                <div class="col-md-4">
+                  {{reserva.6}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="font-weight-bold">Fecha de publicación:</span> {{reserva.7}}
+                </div>
+                <div class="col-md-4">
+                  <span class="font-weight-bold">
+                    Estado físico: </span>
+                    {% if reserva.8 == 'A' %}
+                    Muy Bueno
+                    {% endif %}
+                    {% if reserva.8 == 'B' %}
+                    Bueno
+                    {% endif %}
+                    {% if reserva.8 == 'C' %}
+                    Regular
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                  <span class="font-weight-bold">Período de reserva:</span> {{reserva.0}} | {{reserva.3}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <button class="btn btn-danger" onclick="confirmarCancelarReserva('{{reserva.9}}','{{reserva.2}}','{{reserva.1}}')">Cancelar Reserva</a>
+                </div>
+              </div>
+            </ul>
+            <hr>
+            {% endfor %}
+            {% else %}
+            <p>No hiciste ninguna reserva.</p>
+            <hr>
+            {% endif %}
+
+            <p>En cola de espera:<br>
+            Recordatorio, en caso de que se libere un ejemplar del libro antes
+          de la fecha estimada, se le será notificado vía email o telefónica.</p>
+            {% if reservas_cola is defined and reservas_cola|length > 0 %}
+            {% for reserva_cola in reservas_cola %}
+            <ul>
+              <div class="row">
+                <div class="col-md-4">
+                  <li class="text-uppercase">{{reserva_cola.2}}</li>
+                </div>
+                <div class="col-md-4">
+                <span class="font-weight-bold">Autor:</span> {{reserva_cola.3}}
+                </div>
+                <div class="col-md-4">
+                  <span class="font-weight-bold">Nº en cola: </span>{{reserva_cola.4}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <span class="font-weight-bold">Inicio de reserva: </span>{{reserva_cola.0}}
+                </div>
+                <div class="col-md-6">
+                  <span class="font-weight-bold">Fecha estimada de espera: </span>{{fechas[0][loop.index-1]}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <button class="btn btn-danger" name="" onclick="confirmarCancelarCola('{{reserva_cola.5}}','{{reserva_cola.1}}','{{reserva_cola.4}}')">Cancelar Cola</a>
+                </div>
+              </div>
+              
+            </ul>
+            {% if not loop.last %}
+            <hr>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>No estás en ninguna cola de espera.</p>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -52,12 +145,17 @@
         <div class="card-header" id="cabecera3">
           <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#respuesta3" aria-expanded="false" aria-controls="respuesta3">
-              Mi historial
+              + Mis retiros
             </button>
           </h5>
         </div>
         <div id="respuesta3" class="collapse" aria-labelledby="cabecera3" data-parent="#accordion1">
           <div class="card-body">
+              {% if libros is defined %}
+              {% for libro in libros %}
+              {{libro.1}}{{libro.2}}
+              {% endfor %}
+              {% endif %}
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
               dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
               ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
@@ -71,17 +169,60 @@
         <div class="card-header" id="cabecera4">
           <h5 class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#respuesta4" aria-expanded="false" aria-controls="respuesta4">
-              Mis talleres
+              + Mis talleres
             </button>
           </h5>
         </div>
         <div id="respuesta4" class="collapse" aria-labelledby="cabecera4" data-parent="#accordion1">
           <div class="card-body">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-              mollit anim id est laborum.
+              {% if talleres is defined and talleres|length > 0 %}
+              {% for taller in talleres %}
+              <ul>
+                <div class="row">
+                  <div class="col-md-4">
+                    <li class="text-uppercase">{{taller.2}}</li>
+                  </div>
+                  <div class="col-md-4">
+                  <span class="font-weight-bold">Fecha de Inicio:</span> {{taller.0}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Dia:</span> {{taller.4}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Horario:</span> {{taller.5}} a {{taller.6}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Duración:</span> {{taller.7}} clase/s.
+                  </div>
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Fecha de Inscripción:</span> {{taller.9}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Costo:</span> ${{taller.3}}
+                  </div>
+                  <div class="col-md-4">
+                    <span class="font-weight-bold">Método de pago:</span> {{taller.8}}
+                  </div>
+                <div class="col-md-4">
+                  {% if taller.12 == 'Si' %}
+                  <button class="btn btn-danger" name="{{ taller[11] }}" onclick="confirmarCancelarTaller(name)" disabled>Eliminar Inscripción</a>
+                  {% else %}
+                  <button class="btn btn-danger" name="{{ taller[11] }}" onclick="confirmarCancelarTaller(name)">Eliminar Inscripción</a>
+                  {% endif %}
+                </div>
+               </div>
+              </ul>
+              {% if not loop.last %}
+              <hr>
+              {% endif %}
+              {% endfor %}
+              {% else %}
+              <p>No estás inscripto en ningún taller.</p>
+              {% endif %}
           </div>
         </div>
       </div>
@@ -113,30 +254,80 @@
     </div>
     <div class="card text-center border-info">
         <div class="card-body">
-            <h4 class="card-title">Titulo de la tarjeta 2</h4>
+            <h4 class="card-title">Estado Socio:</h4>
             <p class="card-text">
-                <div id="accordion6">
+          <div id="accordion6">
+            <br>
                     <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#respuesta6" aria-expanded="true" aria-controls="respuesta6">
-                     Pregunta frecuente 2
+                    {% if session['estadosocio']=='Activo' %}
+                    <button class="btn btn-success" data-toggle="collapse" data-target="#respuesta6" aria-expanded="true" aria-controls="respuesta6">
+                      {{session['estadosocio']}}
                     </button>
+                    {% else %}
+                    <button class="btn btn-warning" data-toggle="collapse" data-target="#respuesta6" aria-expanded="true" aria-controls="respuesta6">
+                      {{session['estadosocio']}}
+                    </button>
+                    {% endif %}
                       </h5>
             <div id="respuesta6" class="collapse" aria-labelledby="cabecera6" data-parent="#accordion6">
                   <div class="card-body">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip 
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu 
-                  fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt 
-                  mollit anim id est laborum.
+                  {% if session['estadosocio']=='Activo' %}
+                  <p>Felicidades, no tiene sanciones aplicadas.</p>
+                  {% endif %}
+                  {% if sancionesM is defined and sancionesM|length > 0 %}
+                    {% for sanciones in sancionesM %}
+                        {% if loop.first %}
+                      <ul>
+                      {% endif %}
+                          <li>Período de pago: {{sanciones[0]}} | {{sanciones[1]}}<br>
+                          Motivo: {{sanciones[3]}}<br>
+                          Libro: {{sanciones[4]}}<br>
+                          Monto: ${{sanciones[2]}}</li>
+                      {% if loop.last %}
+                      </ul>
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  {% if sancionesD is defined and sancionesD|length > 0 %}
+                    {% for sanciones in sancionesD %}
+                      {% if loop.first %}
+                      <ul>
+                      {% endif %}
+                          <li>Período de sanción: {{sanciones[0]}} | {{sanciones[1]}}<br>
+                          Motivo: {{sanciones[2]}}<br>
+                          Libro: {{sanciones[4]}}<br>
+                          Cantidad de días: {{sanciones[3]}}</li>
+                      {% if loop.last %}
+                      </ul>
+                      {% endif %}
+                    </ul>
+                    {% endfor %}
+                  {% endif %}
                   </div>
             </div>
           </div>
-
-            </p>
-            <a href="#" class="btn btn-primary">Entrar</a>
         </div>
     </div>
 </div>
+<script>
+  function confirmarCancelarTaller(id_taller)
+  {
+    if(confirm('¿Está seguro de que desea eliminar su inscripción al taller?'))
+      window.location.href="{{url_for('eliminarInscripcion')}}?idtaller=" + id_taller;
+  }
+  function confirmarCancelarReserva(fecha, ejemplar, libro)
+  {
+    if(confirm('¿Está seguro de que desea cancelar su reserva?'))
+    window.location.href="{{url_for('cancelarReserva')}}?fecha_inicio=" + fecha+"&nro_ejemplar="+ejemplar+
+"&isbn="+libro;
+  }
+  function confirmarCancelarCola(fecha, libro, cola)
+  {
+    if(confirm('¿Está seguro de que desea cancelar su cola de espera?'))
+    window.location.href="{{url_for('cancelarColaReserva')}}?fecha_inicio=" + fecha+"&isbn="+libro+
+    "&nro_cola="+cola;
+  }
+</script>
   {% endblock %}  
 </body>
 </html>

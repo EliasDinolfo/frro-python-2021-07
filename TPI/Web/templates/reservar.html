@@ -4,6 +4,51 @@
     {% extends "layout.html" %}
 {% endif %}
 {% block title %}Reservar{% endblock %} 
-{% block content %}
-
-{% endblock %}
+    {% block content %}
+    <div class="container mt-3">
+        {% if ejemplar is defined %}
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ejemplar.6}}" width="350px" height="500px">
+            </div>
+            <div class="col-md-6">
+                <p>Usted seleccionó: {{ejemplar.1}}</p>
+                <p>Número de Edición: {{ejemplar.4}}</p>
+                <p>{{ejemplar.5}}</p>
+                <p>Fecha de Publicación: {{ejemplar.3}}</p>
+                <p>Autor: {{ejemplar.7}}</p>
+                <p>Estado Físico:
+                {% if ejemplar.2 == 'A' %}
+                Muy Bueno
+                {% endif %}
+                {% if ejemplar.2 == 'B' %}
+                Bueno
+                {% endif %}
+                {% if ejemplar.2 == 'C' %}
+                Regular
+                {% endif %}
+        </p>
+            <a href="/catalogo" class="btn btn-dark">Volver</a>
+            <a href="{{url_for('crearReserva', _isbn=isbn, nro_ejemplar=ejemplar.8)}}" class="btn btn-primary" type="submit" class="btn btn-primary">Confirmar Reserva</a>
+            </div>
+        </div>
+        {% elif libro_fecha is defined and nro_cola is defined %}
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{libro_fecha.2}}" width="350px" height="500px">
+            </div>
+            <div class="col-md-6">
+                <p>Usted seleccionó: {{libro_fecha.1}}</p>
+                <p>Autor: {{libro_fecha.3}}</p>
+                <p>Le informamos que no quedan ejemplares disponibles.<br>
+                ¿Desea entrar en cola de espera del libro?<br>
+                Su número en cola será: {{nro_cola}} y la fecha estimada de espera 
+                (sujeta a cambios) será: {{libro_fecha.0}}</p>
+        </p>
+            <a href="/catalogo" class="btn btn-dark">Volver</a>
+            <a href="{{url_for('crearColaReserva', _isbn=isbn, _nro_cola=nro_cola)}}" class="btn btn-primary" type="submit" class="btn btn-primary">Confirmar Cola de Reserva</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
